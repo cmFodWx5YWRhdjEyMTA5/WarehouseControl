@@ -6,20 +6,15 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.stdio.warehousecontrol.DataModel;
-import com.stdio.warehousecontrol.MainActivity;
 import com.stdio.warehousecontrol.gmailHelper.GMailSender;
-
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ExcelCreator {
 
@@ -33,9 +28,9 @@ public class ExcelCreator {
         mActivity = activity;
 
         // создание самого excel файла в памяти
-        HSSFWorkbook workbook = new HSSFWorkbook();
+        XSSFWorkbook workbook = new XSSFWorkbook();
         // создание листа с названием "Просто лист"
-        HSSFSheet sheet = workbook.createSheet("List");
+        XSSFSheet sheet = workbook.createSheet("List");
 
         // счетчик для строк
         int rowNum = 0;
@@ -54,7 +49,7 @@ public class ExcelCreator {
         }
 
         // записываем созданный в памяти Excel документ в файл
-        File file = new File(context.getExternalFilesDir(null), "Складской учет.xlsx");
+        File file = new File(context.getExternalFilesDir(null), "WarehouseControl.xlsx");
         FileOutputStream os = null;
         try {
             os = new FileOutputStream(file);
@@ -76,7 +71,7 @@ public class ExcelCreator {
 
     // заполнение строки (rowNum) определенного листа (sheet)
     // данными  из dataModel созданного в памяти Excel файла
-    private static void createSheetHeader(HSSFSheet sheet, int rowNum, DataModel dataModel) {
+    private static void createSheetHeader(XSSFSheet sheet, int rowNum, DataModel dataModel) {
         Row row = sheet.createRow(rowNum);
 
         row.createCell(0).setCellValue(dataModel.article);
