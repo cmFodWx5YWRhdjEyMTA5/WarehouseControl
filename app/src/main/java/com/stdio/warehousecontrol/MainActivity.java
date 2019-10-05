@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchList
             public void onRowLongClicked(int position) {
                 Toast.makeText(MainActivity.this, "Row " + (position + 1) + " long clicked!", Toast.LENGTH_SHORT).show();
             }
-        })).setSwipeOptionViews(R.id.edit, R.id.delete).setSwipeable(R.id.rowFG, R.id.rowBG, (new RecyclerTouchListener.OnSwipeOptionsClickListener() {
+        })).setSwipeOptionViews(R.id.edit, R.id.delete, R.id.btnPlus, R.id.btnMinus).setSwipeable(R.id.rowFG, R.id.rowBG, (new RecyclerTouchListener.OnSwipeOptionsClickListener() {
             public void onSwipeOptionClicked(int viewID, int position) {
                 if (viewID == R.id.edit) {
                     ChangeItemActivity.key = keysList.get(position);
@@ -105,6 +105,16 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchList
                     startActivity(new Intent(MainActivity.this, ChangeItemActivity.class));
                 } else if (viewID == R.id.delete) {
                     deleteItem(MainActivity.this, position);
+                }
+                else if (viewID == R.id.btnPlus) {
+                    DataModel item = new DataModel(list.get(position).article, list.get(position).barcode, list.get(position).name, String.valueOf(Integer.parseInt(list.get(position).count) + 1), list.get(position).address);
+                    myRef.child(keysList.get(position)).setValue(item);
+                    getData();
+                }
+                else if (viewID == R.id.btnMinus) {
+                    DataModel item = new DataModel(list.get(position).article, list.get(position).barcode, list.get(position).name, String.valueOf(Integer.parseInt(list.get(position).count) - 1), list.get(position).address);
+                    myRef.child(keysList.get(position)).setValue(item);
+                    getData();
                 }
             }
         }));

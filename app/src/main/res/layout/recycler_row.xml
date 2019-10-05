@@ -15,6 +15,39 @@
         android:gravity="right"
         android:orientation="horizontal">
 
+        <RelativeLayout
+            android:layout_width="@dimen/swipeWidth"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:background="?android:selectableItemBackground"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <Button
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_margin="3dp"
+                    android:id="@+id/btnPlus"
+                    android:background="@color/swipeoption_blue"
+                    android:text="+"/>
+
+                <Button
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_margin="3dp"
+                    android:id="@+id/btnMinus"
+                    android:background="@color/swipeoption_blue"
+                    android:text="-"/>
+            </LinearLayout>
+        </RelativeLayout>
+
 
         <RelativeLayout
             android:id="@+id/edit"
