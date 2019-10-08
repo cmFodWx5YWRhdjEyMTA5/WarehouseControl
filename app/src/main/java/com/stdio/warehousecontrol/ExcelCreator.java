@@ -20,7 +20,7 @@ public class ExcelCreator {
 
     static Context mContext;
     static Activity mActivity;
-    static String recipient = "kwork-stdio@mail.ru";
+    static String recipient = "gymnastshop@yandex.ru";
 
     public static void createExcelFile(Context context, Activity activity) throws ParseException {
 
