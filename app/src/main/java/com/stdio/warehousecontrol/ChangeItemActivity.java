@@ -14,8 +14,8 @@ public class ChangeItemActivity extends AppCompatActivity {
 
     private FirebaseDatabase database;
     private DatabaseReference myRef;
-    public static String article, barcode, name, count, number;
-    EditText etArticle, etBarcode, etName, etCount, etNumber;
+    public static String article, barcode, name, count, size;
+    EditText etArticle, etBarcode, etName, etCount, etSize;
     public static boolean itemIsChanged = false;
     public static String key = "";
     String firstBarcode = "";
@@ -41,7 +41,7 @@ public class ChangeItemActivity extends AppCompatActivity {
         etBarcode = findViewById(R.id.etBarcode);
         etName = findViewById(R.id.etName);
         etCount = findViewById(R.id.etCount);
-        etNumber = findViewById(R.id.etAddress);
+        etSize = findViewById(R.id.etSize);
 
         setCurrentValues();
     }
@@ -51,7 +51,7 @@ public class ChangeItemActivity extends AppCompatActivity {
         barcode = etBarcode.getText().toString();
         name = etName.getText().toString();
         count = etCount.getText().toString();
-        number = etNumber.getText().toString();
+        size = etSize.getText().toString();
     }
 
     private void changeValue() {
@@ -62,7 +62,7 @@ public class ChangeItemActivity extends AppCompatActivity {
             }
         }
         if (!barcodeIsAlreadyExist || firstBarcode.equals(barcode)) {
-            DataModel item = new DataModel(article, barcode, name, count, number);
+            DataModel item = new DataModel(article, barcode, name, count, size);
             myRef.child(key).setValue(item);
             itemIsChanged = true;
             finish();
@@ -77,6 +77,6 @@ public class ChangeItemActivity extends AppCompatActivity {
         etBarcode.setText(barcode);
         etName.setText(name);
         etCount.setText(String.valueOf(count));
-        etNumber.setText(String.valueOf(number));
+        etSize.setText(String.valueOf(size));
     }
 }

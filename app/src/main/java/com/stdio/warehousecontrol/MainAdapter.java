@@ -46,7 +46,7 @@ public  class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolde
 
     class MainViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvArticle, tvBarcode, tvName, tvCount, tvAddress;
+        TextView tvArticle, tvBarcode, tvName, tvCount, tvSize;
 
         public MainViewHolder(View itemView) {
             super(itemView);
@@ -54,7 +54,7 @@ public  class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolde
             tvBarcode = itemView.findViewById(R.id.tvBarcode);
             tvName = itemView.findViewById(R.id.tvName);
             tvCount = itemView.findViewById(R.id.tvCount);
-            tvAddress = itemView.findViewById(R.id.tvAddress);
+            tvSize = itemView.findViewById(R.id.tvSize);
         }
 
         public void bindData(DataModel DataModel) {
@@ -62,7 +62,7 @@ public  class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolde
             tvBarcode.setText("Штрих-код: " + DataModel.barcode);
             tvName.setText(DataModel.name);
             tvCount.setText("Количество: " + DataModel.count);
-            tvAddress.setText("Номер полки: " + DataModel.address);
+            tvSize.setText("Размер: " + DataModel.size);
         }
     }
 }

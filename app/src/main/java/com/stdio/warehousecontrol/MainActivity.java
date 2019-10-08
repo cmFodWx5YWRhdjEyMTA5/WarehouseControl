@@ -101,18 +101,18 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchList
                     ChangeItemActivity.barcode = list.get(position).barcode;
                     ChangeItemActivity.name = list.get(position).name;
                     ChangeItemActivity.count = list.get(position).count;
-                    ChangeItemActivity.number = list.get(position).address;
+                    ChangeItemActivity.size = list.get(position).size;
                     startActivity(new Intent(MainActivity.this, ChangeItemActivity.class));
                 } else if (viewID == R.id.delete) {
                     deleteItem(MainActivity.this, position);
                 }
                 else if (viewID == R.id.btnPlus) {
-                    DataModel item = new DataModel(list.get(position).article, list.get(position).barcode, list.get(position).name, String.valueOf(Integer.parseInt(list.get(position).count) + 1), list.get(position).address);
+                    DataModel item = new DataModel(list.get(position).article, list.get(position).barcode, list.get(position).name, String.valueOf(Integer.parseInt(list.get(position).count) + 1), list.get(position).size);
                     myRef.child(keysList.get(position)).setValue(item);
                     getData();
                 }
                 else if (viewID == R.id.btnMinus) {
-                    DataModel item = new DataModel(list.get(position).article, list.get(position).barcode, list.get(position).name, String.valueOf(Integer.parseInt(list.get(position).count) - 1), list.get(position).address);
+                    DataModel item = new DataModel(list.get(position).article, list.get(position).barcode, list.get(position).name, String.valueOf(Integer.parseInt(list.get(position).count) - 1), list.get(position).size);
                     myRef.child(keysList.get(position)).setValue(item);
                     getData();
                 }
@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchList
 
     private void xlsxReader(XSSFWorkbook workbook) {
 
-        String article = null, barcode = null, name = null, count = null, address = null;
+        String article = null, barcode = null, name = null, count = null, size = null;
 
         String result = "";
         // выбираем первый лист для обработки
@@ -201,9 +201,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchList
                 barcode = subStr[1];
                 name = subStr[2];
                 count = subStr[3];
-                address = subStr[4];
+                size = subStr[4];
                 System.out.println(result);
-                DataModel item = new DataModel(article, barcode, name, count, address);
+                DataModel item = new DataModel(article, barcode, name, count, size);
                 myRef.push().setValue(item);
                 result = "";
             }

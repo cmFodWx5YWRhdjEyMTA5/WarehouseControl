@@ -221,12 +221,12 @@
                         android:text="Количество: 45" />
 
                     <TextView
-                        android:id="@+id/tvAddress"
+                        android:id="@+id/tvSize"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:maxLines="1"
-                        android:text="Номер полки: 5" />
+                        android:text="Размер: 5" />
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

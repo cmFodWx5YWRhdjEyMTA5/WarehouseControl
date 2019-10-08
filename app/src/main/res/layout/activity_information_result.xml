@@ -42,10 +42,10 @@
         android:layout_marginTop="5dp"/>
 
     <TextView
-        android:id="@+id/tvAddress"
+        android:id="@+id/tvSize"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Номер полки: 8"
+        android:text="Размер: 8"
         android:layout_below="@id/tvCount"
         android:layout_marginLeft="50dp"
         android:layout_marginTop="5dp"/>
@@ -53,7 +53,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvAddress"
+        android:layout_below="@id/tvSize"
         android:layout_marginTop="50dp">
 
         <Button

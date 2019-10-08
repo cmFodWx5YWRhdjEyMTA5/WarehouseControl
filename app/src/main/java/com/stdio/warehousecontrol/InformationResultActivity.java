@@ -19,10 +19,10 @@ import java.util.ArrayList;
 
 public class InformationResultActivity extends AppCompatActivity {
 
-    TextView tvArticle, tvBarcode, tvName, tvCount, tvAddress;
+    TextView tvArticle, tvBarcode, tvName, tvCount, tvSize;
     public static String key;
     public static boolean viewed = false;
-    public static String article, barcode, name, count, address;
+    public static String article, barcode, name, count, size;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class InformationResultActivity extends AppCompatActivity {
         tvBarcode = findViewById(R.id.tvBarcode);
         tvName = findViewById(R.id.tvName);
         tvCount = findViewById(R.id.tvCount);
-        tvAddress = findViewById(R.id.tvAddress);
+        tvSize = findViewById(R.id.tvSize);
     }
 
     private void setTextViewValues() {
@@ -45,7 +45,7 @@ public class InformationResultActivity extends AppCompatActivity {
         tvBarcode.setText("Штрих-код: " + barcode);
         tvName.setText("Название: " + name);
         tvCount.setText("Количество: " + count);
-        tvAddress.setText("Номер полки: " + address);
+        tvSize.setText("Размер: " + size);
     }
 
     public void changeButton(View view) {
@@ -54,7 +54,7 @@ public class InformationResultActivity extends AppCompatActivity {
         ChangeItemActivity.barcode = barcode;
         ChangeItemActivity.name = name;
         ChangeItemActivity.count = count;
-        ChangeItemActivity.number = address;
+        ChangeItemActivity.size = size;
         startActivity(new Intent(this, ChangeItemActivity.class));
     }
 
@@ -71,7 +71,7 @@ public class InformationResultActivity extends AppCompatActivity {
             tvBarcode.setText("Штрих-код: " + ChangeItemActivity.barcode);
             tvName.setText("Название: " + ChangeItemActivity.name);
             tvCount.setText("Количество: " + ChangeItemActivity.count);
-            tvAddress.setText("Номер полки: " + ChangeItemActivity.number);
+            tvSize.setText("Размер: " + ChangeItemActivity.size);
         }
     }
 }

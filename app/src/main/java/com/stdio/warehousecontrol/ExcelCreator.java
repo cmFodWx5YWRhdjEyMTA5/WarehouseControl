@@ -78,7 +78,7 @@ public class ExcelCreator {
         row.createCell(1).setCellValue(dataModel.barcode);
         row.createCell(2).setCellValue(dataModel.name);
         row.createCell(3).setCellValue(dataModel.count);
-        row.createCell(4).setCellValue(dataModel.address);
+        row.createCell(4).setCellValue(dataModel.size);
     }
 
     private static void sendMessage(final File excelFile) {

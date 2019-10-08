@@ -14,9 +14,9 @@ public class AddItemActivity extends AppCompatActivity {
 
     private FirebaseDatabase database;
     private DatabaseReference myRef;
-    String article, name, count, number;
+    String article, name, count, size;
     public static String barcode = "";
-    EditText etArticle, etBarcode, etName, etCount, etNumber;
+    EditText etArticle, etBarcode, etName, etCount, etSize;
     public static boolean itemIsAdded = false;
 
     @Override
@@ -39,7 +39,7 @@ public class AddItemActivity extends AppCompatActivity {
         etBarcode = findViewById(R.id.etBarcode);
         etName = findViewById(R.id.etName);
         etCount = findViewById(R.id.etCount);
-        etNumber = findViewById(R.id.etAddress);
+        etSize = findViewById(R.id.etSize);
 
         if (barcode != null) {
             etBarcode.setText(barcode);
@@ -51,7 +51,7 @@ public class AddItemActivity extends AppCompatActivity {
         barcode = etBarcode.getText().toString();
         name = etName.getText().toString();
         count = etCount.getText().toString();
-        number = etNumber.getText().toString();
+        size = etSize.getText().toString();
     }
 
     private void pushToDatabase() {
@@ -62,7 +62,7 @@ public class AddItemActivity extends AppCompatActivity {
             }
         }
         if (!barcodeIsAlreadyExist) {
-            DataModel item = new DataModel(article, barcode, name, count, number);
+            DataModel item = new DataModel(article, barcode, name, count, size);
             myRef.push().setValue(item);
             itemIsAdded = true;
             barcode = "";

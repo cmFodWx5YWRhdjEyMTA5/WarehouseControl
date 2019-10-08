@@ -108,7 +108,7 @@ public class ScannerForGetInformationActivity extends AppCompatActivity implemen
                 InformationResultActivity.barcode = MainActivity.list.get(i).barcode;
                 InformationResultActivity.name = MainActivity.list.get(i).name;
                 InformationResultActivity.count = MainActivity.list.get(i).count;
-                InformationResultActivity.address = MainActivity.list.get(i).address;
+                InformationResultActivity.size = MainActivity.list.get(i).size;
                 InformationResultActivity.key = MainActivity.keysList.get(i);
             }
         }
