@@ -62,7 +62,7 @@ public class AddItemActivity extends AppCompatActivity {
             }
         }
         if (!barcodeIsAlreadyExist) {
-            DataModel item = new DataModel(article, barcode, name, count, size);
+            DataModel item = new DataModel(article, barcode, name, count, size, "");
             myRef.push().setValue(item);
             itemIsAdded = true;
             barcode = "";

@@ -17,7 +17,8 @@
         <activity android:name=".ScannerForGetInformationActivity" />
         <activity android:name=".AddItemActivity" />
         <activity android:name=".ScannerActivityForAddingItem" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

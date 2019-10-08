@@ -14,10 +14,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.github.angads25.filepicker.controller.DialogSelectionListener;
@@ -55,10 +58,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchList
     private FirebaseDatabase database;
     private DatabaseReference myRef;
     public static List<DataModel> list;
-    public static ArrayList<String> keysList = new ArrayList<>();
     DialogProperties properties = new DialogProperties();
     FilePickerDialog dialog;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private EditText etSearch;
+    public static List<DataModel> listForSearching = new ArrayList();
 
     @Override
     public void onCreate(Bundle state) {
@@ -77,47 +81,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchList
         getData();
         mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        onTouchListener = new RecyclerTouchListener(this, mRecyclerView);
-        onTouchListener
-                .setClickable((new RecyclerTouchListener.OnRowClickListener() {
-                    @Override
-                    public void onRowClicked(int position) {
-                        //Toast.makeText(MainActivity.this, "Row " + (position + 1) + " clicked!", Toast.LENGTH_SHORT).show();
-                    }
 
-                    @Override
-                    public void onIndependentViewClicked(int independentViewID, int position) {
-                        //Toast.makeText(MainActivity.this, "Button in row " + (position + 1) + " clicked!", Toast.LENGTH_SHORT).show();
-                    }
-                })).setLongClickable(true, (new RecyclerTouchListener.OnRowLongClickListener() {
-            public void onRowLongClicked(int position) {
-                Toast.makeText(MainActivity.this, "Row " + (position + 1) + " long clicked!", Toast.LENGTH_SHORT).show();
-            }
-        })).setSwipeOptionViews(R.id.edit, R.id.delete, R.id.btnPlus, R.id.btnMinus).setSwipeable(R.id.rowFG, R.id.rowBG, (new RecyclerTouchListener.OnSwipeOptionsClickListener() {
-            public void onSwipeOptionClicked(int viewID, int position) {
-                if (viewID == R.id.edit) {
-                    ChangeItemActivity.key = keysList.get(position);
-                    ChangeItemActivity.article = list.get(position).article;
-                    ChangeItemActivity.barcode = list.get(position).barcode;
-                    ChangeItemActivity.name = list.get(position).name;
-                    ChangeItemActivity.count = list.get(position).count;
-                    ChangeItemActivity.size = list.get(position).size;
-                    startActivity(new Intent(MainActivity.this, ChangeItemActivity.class));
-                } else if (viewID == R.id.delete) {
-                    deleteItem(MainActivity.this, position);
-                }
-                else if (viewID == R.id.btnPlus) {
-                    DataModel item = new DataModel(list.get(position).article, list.get(position).barcode, list.get(position).name, String.valueOf(Integer.parseInt(list.get(position).count) + 1), list.get(position).size);
-                    myRef.child(keysList.get(position)).setValue(item);
-                    getData();
-                }
-                else if (viewID == R.id.btnMinus) {
-                    DataModel item = new DataModel(list.get(position).article, list.get(position).barcode, list.get(position).name, String.valueOf(Integer.parseInt(list.get(position).count) - 1), list.get(position).size);
-                    myRef.child(keysList.get(position)).setValue(item);
-                    getData();
-                }
-            }
-        }));
+        initOnTouchListener();
+
+        etSearch = findViewById(R.id.etSearch);
+        setSearchListener();
+
         mRecyclerView.addOnItemTouchListener(onTouchListener);
 
         setFilePickerProperties();
@@ -148,6 +117,85 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchList
 
             }
         });
+    }
+
+    private void initOnTouchListener() {
+        onTouchListener = new RecyclerTouchListener(this, mRecyclerView);
+        onTouchListener
+                .setClickable((new RecyclerTouchListener.OnRowClickListener() {
+                    @Override
+                    public void onRowClicked(int position) {
+                        //Toast.makeText(MainActivity.this, "Row " + (position + 1) + " clicked!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onIndependentViewClicked(int independentViewID, int position) {
+                        //Toast.makeText(MainActivity.this, "Button in row " + (position + 1) + " clicked!", Toast.LENGTH_SHORT).show();
+                    }
+                })).setLongClickable(true, (new RecyclerTouchListener.OnRowLongClickListener() {
+            public void onRowLongClicked(int position) {
+                Toast.makeText(MainActivity.this, "Row " + (position + 1) + " long clicked!", Toast.LENGTH_SHORT).show();
+            }
+        })).setSwipeOptionViews(R.id.edit, R.id.delete, R.id.btnPlus, R.id.btnMinus).setSwipeable(R.id.rowFG, R.id.rowBG, (new RecyclerTouchListener.OnSwipeOptionsClickListener() {
+            public void onSwipeOptionClicked(int viewID, int position) {
+                if (viewID == R.id.edit) {
+                    ChangeItemActivity.key = listForSearching.get(position).key;
+                    ChangeItemActivity.article = listForSearching.get(position).article;
+                    ChangeItemActivity.barcode = listForSearching.get(position).barcode;
+                    ChangeItemActivity.name = listForSearching.get(position).name;
+                    ChangeItemActivity.count = listForSearching.get(position).count;
+                    ChangeItemActivity.size = listForSearching.get(position).size;
+                    startActivity(new Intent(MainActivity.this, ChangeItemActivity.class));
+                } else if (viewID == R.id.delete) {
+                    deleteItem(MainActivity.this, position);
+                }
+                else if (viewID == R.id.btnPlus) {
+                    DataModel item = new DataModel(listForSearching.get(position).article, listForSearching.get(position).barcode, listForSearching.get(position).name, String.valueOf(Integer.parseInt(listForSearching.get(position).count) + 1), listForSearching.get(position).size, listForSearching.get(position).key);
+                    myRef.child(listForSearching.get(position).key).setValue(item);
+                    getData();
+                }
+                else if (viewID == R.id.btnMinus) {
+                    DataModel item = new DataModel(listForSearching.get(position).article, listForSearching.get(position).barcode, listForSearching.get(position).name, String.valueOf(Integer.parseInt(listForSearching.get(position).count) - 1), listForSearching.get(position).size, listForSearching.get(position).key);
+                    myRef.child(listForSearching.get(position).key).setValue(item);
+                    getData();
+                }
+            }
+        }));
+    }
+
+    private void setSearchListener() {
+        etSearch.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {}
+
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                getDataForSearching();
+            }
+        });
+    }
+
+    private void getDataForSearching() {
+        listForSearching.clear();
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println("HEELP " + list.get(i).name);
+            System.out.println("HEELP " + etSearch.getText().toString().isEmpty());
+            if (etSearch.getText().toString().isEmpty()) {
+                listForSearching.add(list.get(i));
+            }
+            else {
+                if (list.get(i).name.toLowerCase().contains(etSearch.getText().toString().toLowerCase()) || list.get(i).article.toLowerCase().contains(etSearch.getText().toString().toLowerCase()) || list.get(i).barcode.toLowerCase().contains(etSearch.getText().toString().toLowerCase())) {
+                    listForSearching.add(list.get(i));
+                }
+            }
+        }
+        setRecyclerViewAdapter();
+        mAdapter.notifyDataSetChanged();
+        initOnTouchListener();
     }
 
     private void xlsxReader(XSSFWorkbook workbook) {
@@ -203,7 +251,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchList
                 count = subStr[3];
                 size = subStr[4];
                 System.out.println(result);
-                DataModel item = new DataModel(article, barcode, name, count, size);
+                DataModel item = new DataModel(article, barcode, name, count, size, "");
                 myRef.push().setValue(item);
                 result = "";
             }
@@ -232,6 +280,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchList
                 .setPositiveButton("Да", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         list.clear();
+                        listForSearching.clear();
                         myRef.removeValue();
                         xlsxReader(workbook);
                     }
@@ -265,9 +314,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchList
                     public void onClick(DialogInterface dialog, int id) {
                         // if this button is clicked, close
                         // current activity
-                        myRef.child(keysList.get(position)).removeValue();
-                        list.remove(position);
-                        keysList.remove(position);
+                        myRef.child(listForSearching.get(position).key).removeValue();
+                        list.remove(listForSearching.get(position));
+                        listForSearching.remove(position);
                         mAdapter.removeItem(position);
                     }
                 })
@@ -322,7 +371,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchList
         if (AddItemActivity.itemIsAdded || ChangeItemActivity.itemIsChanged) {
             AddItemActivity.itemIsAdded = false;
             ChangeItemActivity.itemIsChanged = false;
-            recreate();
+            getData();
         }
     }
 
@@ -339,10 +388,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchList
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 DataModel item = dataSnapshot.getValue(DataModel.class);
-                keysList.add(dataSnapshot.getKey());
-                list.add(item);
-                setRecyclerViewAdapter();
-                mAdapter.notifyDataSetChanged();
+                list.add(new DataModel(item.article, item.barcode, item.name, item.count, item.size, dataSnapshot.getKey()));
+                getDataForSearching();
             }
 
             @Override
@@ -368,7 +415,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchList
     }
 
     private void setRecyclerViewAdapter() {
-        mAdapter = new MainAdapter(this, list);
+        mAdapter = new MainAdapter(this, listForSearching);
         mRecyclerView.setAdapter(mAdapter);
     }
 

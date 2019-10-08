@@ -62,7 +62,7 @@ public class ChangeItemActivity extends AppCompatActivity {
             }
         }
         if (!barcodeIsAlreadyExist || firstBarcode.equals(barcode)) {
-            DataModel item = new DataModel(article, barcode, name, count, size);
+            DataModel item = new DataModel(article, barcode, name, count, size, key);
             myRef.child(key).setValue(item);
             itemIsChanged = true;
             finish();
