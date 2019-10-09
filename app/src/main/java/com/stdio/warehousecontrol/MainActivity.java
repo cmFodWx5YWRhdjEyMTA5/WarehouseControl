@@ -16,6 +16,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -34,6 +35,7 @@ import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchList
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private EditText etSearch;
     public static List<DataModel> listForSearching = new ArrayList();
+    public static String senderPassword;
 
     @Override
     public void onCreate(Bundle state) {
@@ -77,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchList
 
         }
         myRef = database.getReference("items");
+        getSenderPasswordFromDatabase(database);
 
         getData();
         mRecyclerView = findViewById(R.id.recyclerView);
@@ -115,6 +119,26 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchList
                     checkImport(MainActivity.this, workbook);
                 }
 
+            }
+        });
+    }
+
+    private void getSenderPasswordFromDatabase(FirebaseDatabase database) {
+        DatabaseReference refPass = database.getReference("password");
+        // Read from the database
+        refPass.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                senderPassword = dataSnapshot.getValue(String.class);
+                Log.d("firebasee", "Value is: " + senderPassword);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("firebasee", "Failed to read value.", error.toException());
             }
         });
     }

@@ -90,7 +90,7 @@ public class ExcelCreator {
             @Override
             public void run() {
                 try {
-                    GMailSender sender = new GMailSender("warehousecontrolapp@gmail.com", "yourpassword");
+                    GMailSender sender = new GMailSender("warehousecontrolapp@gmail.com", MainActivity.senderPassword);
                     sender.sendMail("Cкладской учет",
                             excelFile,
                             "warehousecontrolapp@gmail.com",
