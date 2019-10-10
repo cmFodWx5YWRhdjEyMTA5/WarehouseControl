@@ -212,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchList
                 listForSearching.add(list.get(i));
             }
             else {
-                if (list.get(i).name.toLowerCase().contains(etSearch.getText().toString().toLowerCase()) || list.get(i).article.toLowerCase().contains(etSearch.getText().toString().toLowerCase()) || list.get(i).barcode.toLowerCase().contains(etSearch.getText().toString().toLowerCase())) {
+                if (list.get(i).name.toLowerCase().contains(etSearch.getText().toString().toLowerCase()) || list.get(i).article.toLowerCase().contains(etSearch.getText().toString().toLowerCase()) || list.get(i).barcode.toLowerCase().contains(etSearch.getText().toString().toLowerCase()) || list.get(i).size.toLowerCase().contains(etSearch.getText().toString().toLowerCase()) || list.get(i).count.toLowerCase().contains(etSearch.getText().toString().toLowerCase())) {
                     listForSearching.add(list.get(i));
                 }
             }
